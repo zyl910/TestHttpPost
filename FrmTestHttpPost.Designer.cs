@@ -130,7 +130,8 @@
             "application/xml",
             "application/x-www-form-urlencoded",
             "text/html",
-            "text/plain"});
+            "text/plain",
+            "*/*"});
             this.cboContentType.Location = new System.Drawing.Point(114, 40);
             this.cboContentType.Margin = new System.Windows.Forms.Padding(4);
             this.cboContentType.Name = "cboContentType";
