@@ -30,6 +30,7 @@ namespace TestHttpPost
         private Encoding _ResEncoding = null;   // 回应的编码.
         private bool _OutputFileAllow = false; // 允许输出文件.
         private string _OutputFilePath = null; // 输出文件的路径.
+        private string[] _HeaderLines = null; // 请求头的行列表.
 
         public FrmTestHttpPost()
         {
@@ -87,12 +88,28 @@ namespace TestHttpPost
             if (bVerbose) OutLog(string.Format("{3}: {0} {1} {2}", sMode, sUrl, sPostData, DateTime.Now.ToString("g")));
             try
             {
+                bool showRequestHeader = false;
                 // init
                 req = HttpWebRequest.Create(sMode == "GET" ? sUrl + sPostData : sUrl) as HttpWebRequest;
                 req.Method = sMode;
                 req.Accept = "*/*";
                 req.KeepAlive = false;
                 req.CachePolicy = new HttpRequestCachePolicy(HttpRequestCacheLevel.NoCacheNoStore);
+                string[] headerLines = _HeaderLines;
+                if (null != headerLines && headerLines.Length > 0) {
+                    var headers = req.Headers;
+                    // Set.
+                    showRequestHeader = true;
+                    foreach(string line in headerLines) {
+                        if (string.IsNullOrEmpty(line)) continue;
+                        int pos = line.IndexOf(':');
+                        if (pos <= 0) continue;
+                        string key = line.Substring(0, pos).Trim();
+                        string value = line.Substring(pos + 1).Trim();
+                        if (string.IsNullOrEmpty(key)) continue;
+                        headers[key] = value;
+                    }
+                }
                 if (0 == string.Compare("POST", sMode))
                 {
                     byte[] bufPost = myEncoding.GetBytes(sPostData);
@@ -101,6 +118,14 @@ namespace TestHttpPost
                     Stream newStream = req.GetRequestStream();
                     newStream.Write(bufPost, 0, bufPost.Length);
                     newStream.Close();
+                }
+                if (showRequestHeader) {
+                    var headers = req.Headers;
+                    // Output RequestHeader
+                    OutLog(".\t#RequestHeader:");
+                    for (int i = 0; i < headers.Count; ++i) {
+                        OutLog("[{2}] {0}:\t{1}", headers.Keys[i], headers[i], i);
+                    }
                 }
 
                 // Response
@@ -124,7 +149,7 @@ namespace TestHttpPost
                         OutLog("Response.StatusDescription:\t{0}", res.StatusDescription);
 
                         // header
-                        OutLog(".\t#Header:");  // 头.
+                        OutLog(".\t#ResponseHeader:");  // 头.
                         for (int i = 0; i < res.Headers.Count; ++i)
                         {
                             OutLog("[{2}] {0}:\t{1}", res.Headers.Keys[i], res.Headers[i], i);
@@ -211,6 +236,10 @@ namespace TestHttpPost
             if (_OutputFileAllow && string.IsNullOrEmpty(_OutputFilePath)) {
                 MessageBox.Show("The OutputFile textbox is empty!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
+            }
+            _HeaderLines = null;
+            if (chkHeader.Checked) {
+                _HeaderLines = txtHeader.Lines;
             }
 
             // Log Length

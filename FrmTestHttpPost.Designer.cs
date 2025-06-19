@@ -36,8 +36,6 @@
             this.lblContentType = new System.Windows.Forms.Label();
             this.cboResEncoding = new System.Windows.Forms.ComboBox();
             this.lblResEncoding = new System.Windows.Forms.Label();
-            this.lblPostData = new System.Windows.Forms.Label();
-            this.txtPostData = new System.Windows.Forms.TextBox();
             this.btnGo = new System.Windows.Forms.Button();
             this.txtUrl = new System.Windows.Forms.TextBox();
             this.cboMode = new System.Windows.Forms.ComboBox();
@@ -47,12 +45,22 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.chkOutputFile = new System.Windows.Forms.CheckBox();
             this.txtOutputFile = new System.Windows.Forms.TextBox();
+            this.tbcInput = new System.Windows.Forms.TabControl();
+            this.tbpPost = new System.Windows.Forms.TabPage();
+            this.tbpHeader = new System.Windows.Forms.TabPage();
+            this.lblPostData = new System.Windows.Forms.Label();
+            this.txtPostData = new System.Windows.Forms.TextBox();
+            this.txtHeader = new System.Windows.Forms.TextBox();
+            this.chkHeader = new System.Windows.Forms.CheckBox();
             this.pnlTool.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tbcInput.SuspendLayout();
+            this.tbpPost.SuspendLayout();
+            this.tbpHeader.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlTool
@@ -64,11 +72,10 @@
             this.pnlTool.Controls.Add(this.lblContentType);
             this.pnlTool.Controls.Add(this.cboResEncoding);
             this.pnlTool.Controls.Add(this.lblResEncoding);
-            this.pnlTool.Controls.Add(this.lblPostData);
-            this.pnlTool.Controls.Add(this.txtPostData);
             this.pnlTool.Controls.Add(this.btnGo);
             this.pnlTool.Controls.Add(this.txtUrl);
             this.pnlTool.Controls.Add(this.cboMode);
+            this.pnlTool.Controls.Add(this.tbcInput);
             this.pnlTool.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTool.Location = new System.Drawing.Point(0, 0);
             this.pnlTool.Margin = new System.Windows.Forms.Padding(4);
@@ -170,29 +177,6 @@
             this.lblResEncoding.Size = new System.Drawing.Size(113, 12);
             this.lblResEncoding.TabIndex = 5;
             this.lblResEncoding.Text = "Response Encoding:";
-            // 
-            // lblPostData
-            // 
-            this.lblPostData.AutoSize = true;
-            this.lblPostData.Location = new System.Drawing.Point(26, 74);
-            this.lblPostData.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblPostData.Name = "lblPostData";
-            this.lblPostData.Size = new System.Drawing.Size(65, 12);
-            this.lblPostData.TabIndex = 4;
-            this.lblPostData.Text = "Post Data:";
-            // 
-            // txtPostData
-            // 
-            this.txtPostData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPostData.Location = new System.Drawing.Point(115, 71);
-            this.txtPostData.Margin = new System.Windows.Forms.Padding(4);
-            this.txtPostData.Multiline = true;
-            this.txtPostData.Name = "txtPostData";
-            this.txtPostData.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtPostData.Size = new System.Drawing.Size(984, 136);
-            this.txtPostData.TabIndex = 3;
             // 
             // btnGo
             // 
@@ -308,6 +292,91 @@
             this.txtOutputFile.TabIndex = 2;
             this.txtOutputFile.Text = "Output.bin";
             // 
+            // tbcInput
+            // 
+            this.tbcInput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbcInput.Controls.Add(this.tbpPost);
+            this.tbcInput.Controls.Add(this.tbpHeader);
+            this.tbcInput.Location = new System.Drawing.Point(0, 67);
+            this.tbcInput.Name = "tbcInput";
+            this.tbcInput.SelectedIndex = 0;
+            this.tbcInput.Size = new System.Drawing.Size(1096, 141);
+            this.tbcInput.TabIndex = 11;
+            // 
+            // tbpPost
+            // 
+            this.tbpPost.Controls.Add(this.lblPostData);
+            this.tbpPost.Controls.Add(this.txtPostData);
+            this.tbpPost.Location = new System.Drawing.Point(4, 22);
+            this.tbpPost.Name = "tbpPost";
+            this.tbpPost.Padding = new System.Windows.Forms.Padding(3);
+            this.tbpPost.Size = new System.Drawing.Size(1088, 115);
+            this.tbpPost.TabIndex = 0;
+            this.tbpPost.Text = "Post";
+            this.tbpPost.UseVisualStyleBackColor = true;
+            // 
+            // tbpHeader
+            // 
+            this.tbpHeader.Controls.Add(this.chkHeader);
+            this.tbpHeader.Controls.Add(this.txtHeader);
+            this.tbpHeader.Location = new System.Drawing.Point(4, 22);
+            this.tbpHeader.Name = "tbpHeader";
+            this.tbpHeader.Padding = new System.Windows.Forms.Padding(3);
+            this.tbpHeader.Size = new System.Drawing.Size(1088, 115);
+            this.tbpHeader.TabIndex = 1;
+            this.tbpHeader.Text = "Header";
+            this.tbpHeader.UseVisualStyleBackColor = true;
+            // 
+            // lblPostData
+            // 
+            this.lblPostData.AutoSize = true;
+            this.lblPostData.Location = new System.Drawing.Point(11, 10);
+            this.lblPostData.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblPostData.Name = "lblPostData";
+            this.lblPostData.Size = new System.Drawing.Size(65, 12);
+            this.lblPostData.TabIndex = 6;
+            this.lblPostData.Text = "Post Data:";
+            // 
+            // txtPostData
+            // 
+            this.txtPostData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPostData.Location = new System.Drawing.Point(100, 7);
+            this.txtPostData.Margin = new System.Windows.Forms.Padding(4);
+            this.txtPostData.Multiline = true;
+            this.txtPostData.Name = "txtPostData";
+            this.txtPostData.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtPostData.Size = new System.Drawing.Size(981, 104);
+            this.txtPostData.TabIndex = 5;
+            // 
+            // txtHeader
+            // 
+            this.txtHeader.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtHeader.Location = new System.Drawing.Point(98, 5);
+            this.txtHeader.Margin = new System.Windows.Forms.Padding(4);
+            this.txtHeader.Multiline = true;
+            this.txtHeader.Name = "txtHeader";
+            this.txtHeader.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtHeader.Size = new System.Drawing.Size(981, 104);
+            this.txtHeader.TabIndex = 8;
+            // 
+            // chkHeader
+            // 
+            this.chkHeader.AutoSize = true;
+            this.chkHeader.Checked = true;
+            this.chkHeader.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkHeader.Location = new System.Drawing.Point(6, 7);
+            this.chkHeader.Name = "chkHeader";
+            this.chkHeader.Size = new System.Drawing.Size(66, 16);
+            this.chkHeader.TabIndex = 7;
+            this.chkHeader.Text = "Header:";
+            this.chkHeader.UseVisualStyleBackColor = true;
+            // 
             // FrmTestHttpPost
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -326,6 +395,11 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tbcInput.ResumeLayout(false);
+            this.tbpPost.ResumeLayout(false);
+            this.tbpPost.PerformLayout();
+            this.tbpHeader.ResumeLayout(false);
+            this.tbpHeader.PerformLayout();
             this.ResumeLayout(false);
 
 		}
@@ -336,9 +410,7 @@
 		private System.Windows.Forms.ComboBox cboMode;
 		private System.Windows.Forms.TextBox txtUrl;
 		private System.Windows.Forms.Button btnGo;
-		private System.Windows.Forms.TextBox txtPostData;
 		private System.Windows.Forms.TextBox txtLog;
-		private System.Windows.Forms.Label lblPostData;
 		private System.Windows.Forms.Label lblResEncoding;
 		private System.Windows.Forms.ComboBox cboResEncoding;
         private System.Windows.Forms.ComboBox cboContentType;
@@ -351,6 +423,13 @@
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.CheckBox chkOutputFile;
         private System.Windows.Forms.TextBox txtOutputFile;
+        private System.Windows.Forms.TabControl tbcInput;
+        private System.Windows.Forms.TabPage tbpPost;
+        private System.Windows.Forms.Label lblPostData;
+        private System.Windows.Forms.TextBox txtPostData;
+        private System.Windows.Forms.TabPage tbpHeader;
+        private System.Windows.Forms.TextBox txtHeader;
+        private System.Windows.Forms.CheckBox chkHeader;
     }
 }
 
