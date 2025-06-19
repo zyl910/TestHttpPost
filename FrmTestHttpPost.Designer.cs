@@ -45,6 +45,8 @@
             this.btnClear = new System.Windows.Forms.Button();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.chkOutputFile = new System.Windows.Forms.CheckBox();
+            this.txtOutputFile = new System.Windows.Forms.TextBox();
             this.pnlTool.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -79,7 +81,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(850, 44);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(63, 15);
+            this.label1.Size = new System.Drawing.Size(47, 12);
             this.label1.TabIndex = 10;
             this.label1.Text = "Delays:";
             // 
@@ -97,7 +99,7 @@
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(72, 25);
+            this.numericUpDown1.Size = new System.Drawing.Size(72, 21);
             this.numericUpDown1.TabIndex = 4;
             this.numericUpDown1.Value = new decimal(new int[] {
             500,
@@ -111,7 +113,7 @@
             this.checkBox1.Location = new System.Drawing.Point(752, 42);
             this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(93, 19);
+            this.checkBox1.Size = new System.Drawing.Size(72, 16);
             this.checkBox1.TabIndex = 9;
             this.checkBox1.Text = "MuitLine";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -132,7 +134,7 @@
             this.cboContentType.Location = new System.Drawing.Point(114, 40);
             this.cboContentType.Margin = new System.Windows.Forms.Padding(4);
             this.cboContentType.Name = "cboContentType";
-            this.cboContentType.Size = new System.Drawing.Size(253, 23);
+            this.cboContentType.Size = new System.Drawing.Size(253, 20);
             this.cboContentType.TabIndex = 8;
             // 
             // lblContentType
@@ -141,7 +143,7 @@
             this.lblContentType.Location = new System.Drawing.Point(2, 44);
             this.lblContentType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblContentType.Name = "lblContentType";
-            this.lblContentType.Size = new System.Drawing.Size(111, 15);
+            this.lblContentType.Size = new System.Drawing.Size(83, 12);
             this.lblContentType.TabIndex = 7;
             this.lblContentType.Text = "Content Type:";
             // 
@@ -154,7 +156,7 @@
             this.cboResEncoding.Location = new System.Drawing.Point(525, 40);
             this.cboResEncoding.Margin = new System.Windows.Forms.Padding(4);
             this.cboResEncoding.Name = "cboResEncoding";
-            this.cboResEncoding.Size = new System.Drawing.Size(212, 23);
+            this.cboResEncoding.Size = new System.Drawing.Size(212, 20);
             this.cboResEncoding.TabIndex = 6;
             this.cboResEncoding.SelectedIndexChanged += new System.EventHandler(this.cboResEncoding_SelectedIndexChanged);
             // 
@@ -164,7 +166,7 @@
             this.lblResEncoding.Location = new System.Drawing.Point(371, 44);
             this.lblResEncoding.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblResEncoding.Name = "lblResEncoding";
-            this.lblResEncoding.Size = new System.Drawing.Size(151, 15);
+            this.lblResEncoding.Size = new System.Drawing.Size(113, 12);
             this.lblResEncoding.TabIndex = 5;
             this.lblResEncoding.Text = "Response Encoding:";
             // 
@@ -174,7 +176,7 @@
             this.lblPostData.Location = new System.Drawing.Point(26, 74);
             this.lblPostData.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPostData.Name = "lblPostData";
-            this.lblPostData.Size = new System.Drawing.Size(87, 15);
+            this.lblPostData.Size = new System.Drawing.Size(65, 12);
             this.lblPostData.TabIndex = 4;
             this.lblPostData.Text = "Post Data:";
             // 
@@ -210,7 +212,7 @@
             this.txtUrl.Location = new System.Drawing.Point(115, 2);
             this.txtUrl.Margin = new System.Windows.Forms.Padding(4);
             this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(891, 25);
+            this.txtUrl.Size = new System.Drawing.Size(891, 21);
             this.txtUrl.TabIndex = 1;
             this.txtUrl.Text = "http://localhost/";
             // 
@@ -224,7 +226,7 @@
             this.cboMode.Location = new System.Drawing.Point(4, 2);
             this.cboMode.Margin = new System.Windows.Forms.Padding(4);
             this.cboMode.Name = "cboMode";
-            this.cboMode.Size = new System.Drawing.Size(105, 23);
+            this.cboMode.Size = new System.Drawing.Size(105, 20);
             this.cboMode.TabIndex = 0;
             // 
             // txtLog
@@ -237,8 +239,8 @@
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtLog.Size = new System.Drawing.Size(1091, 489);
-            this.txtLog.TabIndex = 1;
+            this.txtLog.Size = new System.Drawing.Size(1091, 492);
+            this.txtLog.TabIndex = 5;
             this.txtLog.WordWrap = false;
             // 
             // btnClear
@@ -247,7 +249,7 @@
             this.btnClear.Location = new System.Drawing.Point(1015, 14);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(65, 22);
-            this.btnClear.TabIndex = 2;
+            this.btnClear.TabIndex = 4;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.button1_Click);
@@ -276,6 +278,8 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.txtOutputFile);
+            this.splitContainer1.Panel2.Controls.Add(this.chkOutputFile);
             this.splitContainer1.Panel2.Controls.Add(this.btnClear);
             this.splitContainer1.Panel2.Controls.Add(this.checkBox2);
             this.splitContainer1.Panel2.Controls.Add(this.txtLog);
@@ -283,6 +287,25 @@
             this.splitContainer1.SplitterDistance = 213;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 4;
+            // 
+            // chkOutputFile
+            // 
+            this.chkOutputFile.Location = new System.Drawing.Point(11, 14);
+            this.chkOutputFile.Name = "chkOutputFile";
+            this.chkOutputFile.Size = new System.Drawing.Size(109, 19);
+            this.chkOutputFile.TabIndex = 1;
+            this.chkOutputFile.Text = "&Output file:";
+            this.chkOutputFile.UseVisualStyleBackColor = true;
+            // 
+            // txtOutputFile
+            // 
+            this.txtOutputFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtOutputFile.Location = new System.Drawing.Point(114, 12);
+            this.txtOutputFile.Name = "txtOutputFile";
+            this.txtOutputFile.Size = new System.Drawing.Size(710, 21);
+            this.txtOutputFile.TabIndex = 2;
+            this.txtOutputFile.Text = "Output.bin";
             // 
             // FrmTestHttpPost
             // 
@@ -325,6 +348,8 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.CheckBox chkOutputFile;
+        private System.Windows.Forms.TextBox txtOutputFile;
     }
 }
 

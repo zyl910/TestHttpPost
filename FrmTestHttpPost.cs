@@ -13,13 +13,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.IO.Pipes;
 using System.Net;
 using System.Net.Cache;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace TestHttpPost
 {
@@ -27,6 +28,8 @@ namespace TestHttpPost
     {
         private EncodingInfo[] _Encodings = null;   // 编码集合.
         private Encoding _ResEncoding = null;   // 回应的编码.
+        private bool _OutputFileAllow = false; // 允许输出文件.
+        private string _OutputFilePath = null; // 输出文件的路径.
 
         public FrmTestHttpPost()
         {
@@ -137,8 +140,28 @@ namespace TestHttpPost
 
                     // body
                     if (bVerbose) OutLog(".\t#Body:");    // 主体.
-                    using (Stream resStream = res.GetResponseStream())
+                    using (Stream resStreamRaw = res.GetResponseStream())
                     {
+                        Stream resStream = resStreamRaw;
+                        if (_OutputFileAllow) {
+                            MemoryStream memoryStream = new MemoryStream();
+                            resStreamRaw.CopyTo(memoryStream);
+                            OutLog(string.Format("Byte size: {0} // {0:X}", memoryStream.Length));
+                            if (!string.IsNullOrEmpty(_OutputFilePath)) {
+                                string fullPath = Path.GetFullPath(_OutputFilePath);
+                                memoryStream.Position = 0;
+                                try {
+                                    File.WriteAllBytes(fullPath, memoryStream.GetBuffer());
+                                    OutLog(string.Format("Output file OK. {0}", fullPath));
+                                } catch (Exception ex1) {
+                                    OutLog(string.Format("Output file fail! {0}", fullPath));
+                                    OutLog(ex1.ToString());
+                                }
+                            }
+                            // next.
+                            memoryStream.Position = 0;
+                            resStream = memoryStream;
+                        }
                         using (StreamReader resStreamReader = new StreamReader(resStream, encoding))
                         {
                             OutLog(resStreamReader.ReadToEnd());
@@ -183,6 +206,12 @@ namespace TestHttpPost
             string sPostData = txtPostData.Text;
             string sContentType = cboContentType.SelectedItem.ToString(); // "application/x-www-form-urlencoded";
             TextReader read = new System.IO.StringReader(sPostData);
+            _OutputFileAllow = chkOutputFile.Checked;
+            _OutputFilePath = txtOutputFile.Text.Trim();
+            if (_OutputFileAllow && string.IsNullOrEmpty(_OutputFilePath)) {
+                MessageBox.Show("The OutputFile textbox is empty!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
 
             // Log Length
             //if (txtLog.Lines.Length > 3000) txtLog.Clear();
