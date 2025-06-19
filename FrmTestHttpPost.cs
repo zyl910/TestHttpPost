@@ -171,7 +171,7 @@ namespace TestHttpPost
                         if (_OutputFileAllow) {
                             MemoryStream memoryStream = new MemoryStream();
                             resStreamRaw.CopyTo(memoryStream);
-                            OutLog(string.Format("Byte size: {0} // {0:X}", memoryStream.Length));
+                            OutLog(string.Format("Byte size: {0} // 0x{0:X}", memoryStream.Length));
                             if (!string.IsNullOrEmpty(_OutputFilePath)) {
                                 string fullPath = Path.GetFullPath(_OutputFilePath);
                                 memoryStream.Position = 0;
