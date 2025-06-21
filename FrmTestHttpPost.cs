@@ -3,8 +3,8 @@
 // Author: zyl910
 // Blog: http://www.cnblogs.com/zyl910
 // URL: http://www.cnblogs.com/zyl910/archive/2012/09/19/TestHttpPost.html
-// Version: V1.00
-// Updata: 2012-09-19
+// Version: V1.20
+// Updata: 2025-06-21
 //
 ////////////////////////////////////////////////////////////
 
