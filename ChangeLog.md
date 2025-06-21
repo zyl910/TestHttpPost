@@ -1,6 +1,8 @@
 # ChangeLog (变更日志)
 
-## [2025-06-19] v1.2
+## [2025-06-21] v1.2
+
+https://www.cnblogs.com/zyl910/p/18940683/TestHttpPost_v1_2
 
 - 框架版本改为 `.NET Framework 4.5`.
 - 增加输出文件的功能. 增加了“OutputFile”的复选框及文本框.
