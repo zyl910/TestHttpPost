@@ -3,8 +3,8 @@
 // Author: zyl910
 // Blog: http://www.cnblogs.com/zyl910
 // URL: http://www.cnblogs.com/zyl910/archive/2012/09/19/TestHttpPost.html
-// Version: V1.20
-// Updata: 2025-06-21
+// Version: V1.2.1
+// Updata: 2025-07-15
 //
 ////////////////////////////////////////////////////////////
 
@@ -17,6 +17,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Net;
 using System.Net.Cache;
+using System.Net.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,6 +35,11 @@ namespace TestHttpPost
 
         public FrmTestHttpPost()
         {
+            int securityProtocol = 16368; // SSLv3 ~ TSLv1.3. 48 + 192 + 768 + 3072 + 12288 = 16368
+            ServicePointManager.SecurityProtocol = (SecurityProtocolType)securityProtocol;
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(delegate {
+                return true;//https请求 忽略证书，可以直接访问
+            });
             InitializeComponent();
         }
 
