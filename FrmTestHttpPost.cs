@@ -3,8 +3,8 @@
 // Author: zyl910
 // Blog: http://www.cnblogs.com/zyl910
 // URL: http://www.cnblogs.com/zyl910/archive/2012/09/19/TestHttpPost.html
-// Version: V1.00
-// Updata: 2012-09-19
+// Version: V1.2.1
+// Updata: 2025-07-15
 //
 ////////////////////////////////////////////////////////////
 
@@ -13,13 +13,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.IO.Pipes;
 using System.Net;
 using System.Net.Cache;
+using System.Net.Security;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace TestHttpPost
 {
@@ -27,9 +29,17 @@ namespace TestHttpPost
     {
         private EncodingInfo[] _Encodings = null;   // 编码集合.
         private Encoding _ResEncoding = null;   // 回应的编码.
+        private bool _OutputFileAllow = false; // 允许输出文件.
+        private string _OutputFilePath = null; // 输出文件的路径.
+        private string[] _HeaderLines = null; // 请求头的行列表.
 
         public FrmTestHttpPost()
         {
+            int securityProtocol = 16368; // SSLv3 ~ TSLv1.3. 48 + 192 + 768 + 3072 + 12288 = 16368
+            ServicePointManager.SecurityProtocol = (SecurityProtocolType)securityProtocol;
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(delegate {
+                return true;//https请求 忽略证书，可以直接访问
+            });
             InitializeComponent();
         }
 
@@ -84,12 +94,28 @@ namespace TestHttpPost
             if (bVerbose) OutLog(string.Format("{3}: {0} {1} {2}", sMode, sUrl, sPostData, DateTime.Now.ToString("g")));
             try
             {
+                bool showRequestHeader = false;
                 // init
                 req = HttpWebRequest.Create(sMode == "GET" ? sUrl + sPostData : sUrl) as HttpWebRequest;
                 req.Method = sMode;
                 req.Accept = "*/*";
                 req.KeepAlive = false;
                 req.CachePolicy = new HttpRequestCachePolicy(HttpRequestCacheLevel.NoCacheNoStore);
+                string[] headerLines = _HeaderLines;
+                if (null != headerLines && headerLines.Length > 0) {
+                    var headers = req.Headers;
+                    // Set.
+                    showRequestHeader = true;
+                    foreach(string line in headerLines) {
+                        if (string.IsNullOrEmpty(line)) continue;
+                        int pos = line.IndexOf(':');
+                        if (pos <= 0) continue;
+                        string key = line.Substring(0, pos).Trim();
+                        string value = line.Substring(pos + 1).Trim();
+                        if (string.IsNullOrEmpty(key)) continue;
+                        headers[key] = value;
+                    }
+                }
                 if (0 == string.Compare("POST", sMode))
                 {
                     byte[] bufPost = myEncoding.GetBytes(sPostData);
@@ -98,6 +124,14 @@ namespace TestHttpPost
                     Stream newStream = req.GetRequestStream();
                     newStream.Write(bufPost, 0, bufPost.Length);
                     newStream.Close();
+                }
+                if (showRequestHeader) {
+                    var headers = req.Headers;
+                    // Output RequestHeader
+                    OutLog(".\t#RequestHeader:");
+                    for (int i = 0; i < headers.Count; ++i) {
+                        OutLog("[{2}] {0}:\t{1}", headers.Keys[i], headers[i], i);
+                    }
                 }
 
                 // Response
@@ -121,7 +155,7 @@ namespace TestHttpPost
                         OutLog("Response.StatusDescription:\t{0}", res.StatusDescription);
 
                         // header
-                        OutLog(".\t#Header:");  // 头.
+                        OutLog(".\t#ResponseHeader:");  // 头.
                         for (int i = 0; i < res.Headers.Count; ++i)
                         {
                             OutLog("[{2}] {0}:\t{1}", res.Headers.Keys[i], res.Headers[i], i);
@@ -137,8 +171,28 @@ namespace TestHttpPost
 
                     // body
                     if (bVerbose) OutLog(".\t#Body:");    // 主体.
-                    using (Stream resStream = res.GetResponseStream())
+                    using (Stream resStreamRaw = res.GetResponseStream())
                     {
+                        Stream resStream = resStreamRaw;
+                        if (_OutputFileAllow) {
+                            MemoryStream memoryStream = new MemoryStream();
+                            resStreamRaw.CopyTo(memoryStream);
+                            OutLog(string.Format("Byte size: {0} // 0x{0:X}", memoryStream.Length));
+                            if (!string.IsNullOrEmpty(_OutputFilePath)) {
+                                string fullPath = Path.GetFullPath(_OutputFilePath);
+                                memoryStream.Position = 0;
+                                try {
+                                    File.WriteAllBytes(fullPath, memoryStream.GetBuffer());
+                                    OutLog(string.Format("Output file OK. {0}", fullPath));
+                                } catch (Exception ex1) {
+                                    OutLog(string.Format("Output file fail! {0}", fullPath));
+                                    OutLog(ex1.ToString());
+                                }
+                            }
+                            // next.
+                            memoryStream.Position = 0;
+                            resStream = memoryStream;
+                        }
                         using (StreamReader resStreamReader = new StreamReader(resStream, encoding))
                         {
                             OutLog(resStreamReader.ReadToEnd());
@@ -183,6 +237,16 @@ namespace TestHttpPost
             string sPostData = txtPostData.Text;
             string sContentType = cboContentType.SelectedItem.ToString(); // "application/x-www-form-urlencoded";
             TextReader read = new System.IO.StringReader(sPostData);
+            _OutputFileAllow = chkOutputFile.Checked;
+            _OutputFilePath = txtOutputFile.Text.Trim();
+            if (_OutputFileAllow && string.IsNullOrEmpty(_OutputFilePath)) {
+                MessageBox.Show("The OutputFile textbox is empty!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
+            _HeaderLines = null;
+            if (chkHeader.Checked) {
+                _HeaderLines = txtHeader.Lines;
+            }
 
             // Log Length
             //if (txtLog.Lines.Length > 3000) txtLog.Clear();
